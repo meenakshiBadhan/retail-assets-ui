@@ -9,6 +9,7 @@ function StoreDetails() {
   const { id } = useParams();
   const [store, setStore] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [completenessStatus, setCompletenessStatus] = useState(false);
 
   // Fetch store details
   const fetchStoreDetails = async () => {
@@ -16,10 +17,27 @@ function StoreDetails() {
     try {
       const response = await storeService.getStoreById(id);
       setStore(response.data);
+      fetchCompletenessStatus(response.data);
     } catch (error) {
       message.error("Failed to load store details", error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Determine completeness status
+  const fetchCompletenessStatus = (storeData) => {
+    const expectedDevices = storeData.expectedDevices || [];
+
+    if (expectedDevices.length === 0) {
+      setCompletenessStatus(false);
+    } else {
+      const inCompleteDevices = expectedDevices.filter(
+        (device) =>
+          parseInt(device.expectedQuantity) >
+          parseInt(device.registeredQuantity)
+      );
+      setCompletenessStatus(inCompleteDevices.length === 0);
     }
   };
 
@@ -37,6 +55,11 @@ function StoreDetails() {
       title: "Expected Quantity",
       dataIndex: "expectedQuantity",
       key: "expectedQuantity",
+    },
+    {
+      title: "Registered Quantity",
+      dataIndex: "registeredQuantity",
+      key: "registeredQuantity",
     },
   ];
 
@@ -78,7 +101,7 @@ function StoreDetails() {
             <Descriptions.Item label="Name">{store.name}</Descriptions.Item>
             <Descriptions.Item label="Status">{store.status}</Descriptions.Item>
             <Descriptions.Item label="Completeness">
-              {store.expectedDevices.length > 0 ? "✔" : "✖"}
+              {completenessStatus ? "✔" : "✖"}
             </Descriptions.Item>
           </Descriptions>
         </Card>
