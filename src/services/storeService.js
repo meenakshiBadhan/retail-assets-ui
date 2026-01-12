@@ -1,26 +1,31 @@
-import axios from "axios";
-
-// Create axios instance with base configuration
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 10000,
-});
+import axiosApi from "./requestInterceptor";
 
 // Get all stores with pagination
-const getStores = async (page = 1, limit = 10) => {
-  const response = await api.get(`/api/stores?page=${page}&limit=${limit}`);
+const getStores = async (
+  page = 1,
+  limit = import.meta.env.VITE_DEFAULT_PAGE_SIZE
+) => {
+  const response = await axiosApi.get(
+    `/api/stores?page=${page}&limit=${limit}`
+  );
   return response.data;
 };
 
 // Get single store by ID
 const getStoreById = async (id) => {
-  const response = await api.get(`/api/stores/${id}`);
+  const response = await axiosApi.get(`/api/stores/${id}`);
   return response.data;
 };
 
 // Create new store
 const createStore = async (storeData) => {
-  const response = await api.post("/api/stores", storeData);
+  const response = await axiosApi.post("/api/stores", storeData);
+  return response.data;
+};
+
+// Update store
+const updateStore = async (id, storeData) => {
+  const response = await axiosApi.put(`/api/stores/${id}`, storeData);
   return response.data;
 };
 
@@ -28,4 +33,5 @@ export default {
   getStores,
   getStoreById,
   createStore,
+  updateStore,
 };

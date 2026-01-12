@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Layout, Form, Input, Button, Select, message } from "antd";
+import { HomeOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import deviceService from "../services/deviceService";
 import storeService from "../services/storeService";
 import deviceTypeService from "../services/deviceTypeService";
 
 const { Header, Content } = Layout;
 
+// Device Registration Page Component
 function DeviceRegistration() {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [stores, setStores] = useState([]);
   const [deviceTypes, setDeviceTypes] = useState([]);
@@ -51,10 +55,25 @@ function DeviceRegistration() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header style={{ background: "#fff", padding: "0 50px" }}>
+      {/* Header with home button and title */}
+      <Header
+        style={{
+          background: "#fff",
+          padding: "0 50px",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          icon={<HomeOutlined />}
+          onClick={() => navigate("/")}
+          style={{ marginRight: "20px" }}
+        />
         <h1 style={{ margin: 0 }}>Device Registration</h1>
       </Header>
+      {/* Content section */}
       <Content style={{ padding: "50px", background: "#fff" }}>
+        {/* Device Registration Form */}
         <Form
           form={form}
           layout="vertical"

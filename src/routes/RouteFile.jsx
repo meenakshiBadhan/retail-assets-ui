@@ -1,16 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
 import Stores from "../pages/Stores";
 import StoreDetails from "../pages/StoreDetails";
-import DeviceRegistration from "../pages/DeviceRegistration";
+import Warehouses from "../pages/Warehouses";
 
 const RouteFile = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Stores />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/stores" element={<Stores />} />
         <Route path="/stores/:id" element={<StoreDetails />} />
-        <Route path="/device-registration" element={<DeviceRegistration />} />
+        <Route path="/warehouses" element={<Warehouses />} />
       </Routes>
     </BrowserRouter>
   );

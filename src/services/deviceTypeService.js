@@ -1,10 +1,8 @@
-import axios from "axios";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import axiosApi from "./requestInterceptor";
 
 // Get all device types
 const getDeviceTypes = async () => {
-  const response = await axios.get(`${API_BASE_URL}/api/device-types`);
+  const response = await axiosApi.get(`/api/device-types`);
   return response.data;
 };
 
